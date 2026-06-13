@@ -1,0 +1,37 @@
+name: airwatch_id
+description: AirWatch ID — Monitor kualitas udara untuk pengguna Indonesia
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.2
+  http: ^1.2.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  fl_chart: ^0.70.0
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
+  flutter_local_notifications: ^18.0.1
+  home_widget: ^0.7.0
+  permission_handler: ^11.3.1
+  intl: ^0.19.0
+  shimmer: ^3.0.0
+  connectivity_plus: ^6.1.1
+  shared_preferences: ^2.3.2
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.12
+
+flutter:
+  uses-material-design: true
