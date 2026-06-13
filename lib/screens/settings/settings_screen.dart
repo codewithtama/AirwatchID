@@ -148,7 +148,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               activeTrackColor: activeColor,
               inactiveTrackColor: AppTheme.border,
               thumbColor: activeColor,
-              overlayColor: activeColor.withOpacity(0.15),
+              overlayColor: activeColor.withValues(alpha: 0.15),
               valueIndicatorColor: activeColor,
               valueIndicatorTextStyle: const TextStyle(
                 fontFamily: 'Sora',
@@ -182,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         width: 38,
         height: 38,
         decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
+          color: iconColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(icon, color: iconColor, size: 20),
@@ -243,6 +243,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _confirmClearCache(
       BuildContext context, AirQualityProvider aq) async {
+    final messenger = ScaffoldMessenger.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -288,14 +289,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (confirmed == true && mounted) {
       await aq.clearCache();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Cache berhasil dihapus.',
-                style: TextStyle(fontFamily: 'Sora')),
-          ),
-        );
-      }
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Cache berhasil dihapus.',
+              style: TextStyle(fontFamily: 'Sora')),
+        ),
+      );
     }
   }
 }
+

@@ -4,7 +4,6 @@ import '../../providers/air_quality_provider.dart';
 import '../../widgets/pollutant_row.dart';
 import '../../widgets/trend_chart.dart';
 import '../../core/theme.dart';
-import '../../core/utils.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key});

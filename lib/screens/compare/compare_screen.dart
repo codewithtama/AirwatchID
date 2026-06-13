@@ -187,7 +187,7 @@ class _CompareScreenState extends State<CompareScreen> {
         border: Border.all(
           color: city.isLoading
               ? AppTheme.border
-              : level.color.withOpacity(0.3),
+              : level.color.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -203,7 +203,7 @@ class _CompareScreenState extends State<CompareScreen> {
                   ? []
                   : [
                       BoxShadow(
-                        color: level.color.withOpacity(0.5),
+                        color: level.color.withValues(alpha: 0.5),
                         blurRadius: 6,
                         spreadRadius: 1,
                       ),
@@ -404,3 +404,4 @@ class _CompareScreenState extends State<CompareScreen> {
     );
   }
 }
+

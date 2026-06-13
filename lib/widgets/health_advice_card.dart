@@ -23,10 +23,10 @@ class HealthAdviceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.surfaceCard,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: levelColor.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: levelColor.withValues(alpha: 0.3), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: levelColor.withOpacity(0.08),
+            color: levelColor.withValues(alpha: 0.08),
             blurRadius: 20,
             spreadRadius: 0,
           ),
@@ -74,7 +74,7 @@ class HealthAdviceCard extends StatelessWidget {
                   color: levelColor,
                   boxShadow: [
                     BoxShadow(
-                      color: levelColor.withOpacity(0.6),
+                      color: levelColor.withValues(alpha: 0.6),
                       blurRadius: 8,
                       spreadRadius: 2,
                     ),
@@ -120,3 +120,4 @@ class HealthAdviceCard extends StatelessWidget {
     );
   }
 }
+

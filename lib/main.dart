@@ -162,7 +162,7 @@ class _NavItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? AppTheme.accent.withOpacity(0.1) : Colors.transparent,
+          color: selected ? AppTheme.accent.withValues(alpha: 0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -189,3 +189,4 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
+

@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../core/theme.dart';
-import '../core/utils.dart';
 
 class AqiCircleIndicator extends StatefulWidget {
   final int aqi;

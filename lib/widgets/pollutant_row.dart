@@ -131,7 +131,7 @@ class _PollutantRowState extends State<PollutantRow>
                         borderRadius: BorderRadius.circular(3),
                         boxShadow: [
                           BoxShadow(
-                            color: _barColor().withOpacity(0.4),
+                            color: _barColor().withValues(alpha: 0.4),
                             blurRadius: 6,
                             spreadRadius: 0,
                           ),
@@ -148,3 +148,4 @@ class _PollutantRowState extends State<PollutantRow>
     );
   }
 }
+

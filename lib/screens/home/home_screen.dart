@@ -204,9 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: AqiColors.sedang.withOpacity(0.1),
+              color: AqiColors.sedang.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AqiColors.sedang.withOpacity(0.3)),
+              border: Border.all(color: AqiColors.sedang.withValues(alpha: 0.3)),
             ),
             child: Row(
               children: [
@@ -440,3 +440,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

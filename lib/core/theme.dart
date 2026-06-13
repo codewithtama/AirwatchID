@@ -235,7 +235,7 @@ class AppTheme {
         ),
         navigationBarTheme: NavigationBarThemeData(
           backgroundColor: surface,
-          indicatorColor: accent.withOpacity(0.15),
+          indicatorColor: accent.withValues(alpha: 0.15),
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return const TextStyle(
@@ -265,3 +265,4 @@ class AppTheme {
         ),
       );
 }
+

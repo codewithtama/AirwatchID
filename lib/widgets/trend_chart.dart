@@ -105,8 +105,8 @@ class TrendChart extends StatelessWidget {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    AppTheme.accent.withOpacity(0.3),
-                    AppTheme.accent.withOpacity(0.0),
+                    AppTheme.accent.withValues(alpha: 0.3),
+                    AppTheme.accent.withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -140,3 +140,4 @@ class TrendChart extends StatelessWidget {
     );
   }
 }
+
