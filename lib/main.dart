@@ -112,19 +112,21 @@ class _MainShellState extends State<MainShell> {
           border: Border(top: BorderSide(color: AppTheme.border, width: 1)),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
               children: _navItems.asMap().entries.map((e) {
                 final i = e.key;
                 final item = e.value;
                 final selected = _currentIndex == i;
-                return _NavItem(
-                  icon: selected ? item.activeIcon : item.icon,
-                  label: item.label,
-                  selected: selected,
-                  onTap: () => setState(() => _currentIndex = i),
+                return Expanded(
+                  flex: selected ? 2 : 1,
+                  child: _NavItem(
+                    icon: selected ? item.activeIcon : item.icon,
+                    label: item.label,
+                    selected: selected,
+                    onTap: () => setState(() => _currentIndex = i),
+                  ),
                 );
               }).toList(),
             ),
@@ -161,34 +163,46 @@ class _NavItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: selected
-              ? AppTheme.accent.withValues(alpha: 0.1)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 22,
-              color: selected ? AppTheme.accent : AppTheme.textTertiary,
-            ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight:
-                    selected ? FontWeight.w700 : FontWeight.w400,
+      child: Container(
+        height: 52,
+        alignment: Alignment.center,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(
+            horizontal: selected ? 12 : 8,
+            vertical: 6,
+          ),
+          decoration: BoxDecoration(
+            color: selected
+                ? AppTheme.accent.withValues(alpha: 0.1)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 20,
                 color: selected ? AppTheme.accent : AppTheme.textTertiary,
               ),
-            ),
-          ],
+              if (selected) ...[
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Sora',
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.accent,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );

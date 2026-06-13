@@ -8,6 +8,7 @@ import '../../widgets/health_advice_card.dart';
 import '../../widgets/share_card.dart';
 import '../../core/theme.dart';
 import '../../core/utils.dart';
+import '../settings/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -114,39 +115,53 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         Consumer2<LocationProvider, AirQualityProvider>(
           builder: (ctx, loc, aq, __) {
-            if (aq.currentData == null) return const SizedBox();
+            final hasData = aq.currentData != null;
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Share button
+                if (hasData) ...[
+                  IconButton(
+                    icon: const Icon(Icons.share_rounded,
+                        size: 20, color: AppTheme.textSecondary),
+                    onPressed: () {
+                      final data = aq.currentData!;
+                      final current = data.current;
+                      final aqi = AqiUtils.computeOverallAqi(
+                          pm25: current.pm25, pm10: current.pm10);
+                      ShareService.shareAqiCard(
+                        context: ctx,
+                        cityName: loc.cityName,
+                        aqi: aqi,
+                        pm25: current.pm25,
+                        pm10: current.pm10,
+                        fetchedAt: data.fetchedAt,
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Text(
+                      AqiUtils.formatDateTime(aq.currentData!.fetchedAt),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: AppTheme.textTertiary,
+                      ),
+                    ),
+                  ),
+                ],
                 IconButton(
-                  icon: const Icon(Icons.share_rounded,
+                  icon: const Icon(Icons.settings_rounded,
                       size: 20, color: AppTheme.textSecondary),
                   onPressed: () {
-                    final data = aq.currentData!;
-                    final current = data.current;
-                    final aqi = AqiUtils.computeOverallAqi(
-                        pm25: current.pm25, pm10: current.pm10);
-                    ShareService.shareAqiCard(
-                      context: ctx,
-                      cityName: loc.cityName,
-                      aqi: aqi,
-                      pm25: current.pm25,
-                      pm10: current.pm10,
-                      fetchedAt: data.fetchedAt,
+                    Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (ctx) => const SettingsScreen(),
+                      ),
                     );
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: Text(
-                    AqiUtils.formatDateTime(aq.currentData!.fetchedAt),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: AppTheme.textTertiary,
-                    ),
-                  ),
-                ),
+                const SizedBox(width: 8),
               ],
             );
           },
