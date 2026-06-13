@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/air_quality.dart';
+import '../models/forecast.dart';
 import '../api/open_meteo_service.dart';
 import '../../core/constants.dart';
 
