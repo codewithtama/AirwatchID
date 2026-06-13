@@ -115,4 +115,14 @@ class AirQualityRepo {
   List<String> getCachedCityNames() {
     return _box?.values.map((c) => c.cityName).toSet().toList() ?? [];
   }
+
+  Future<List<DailyForecast>> fetchForecast({
+    required double latitude,
+    required double longitude,
+  }) {
+    return _service.fetchForecast(
+      latitude: latitude,
+      longitude: longitude,
+    );
+  }
 }
