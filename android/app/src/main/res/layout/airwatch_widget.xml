@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000"
+    android:padding="12dp">
+
+    <!-- AQI Number (large, left) -->
+    <TextView
+        android:id="@+id/widget_aqi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:text="--"
+        android:textColor="#FF00E676"
+        android:textSize="38sp"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold" />
+
+    <!-- AQI label -->
+    <TextView
+        android:id="@+id/widget_aqi_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/widget_aqi"
+        android:layout_alignStart="@id/widget_aqi"
+        android:text="AQI"
+        android:textColor="#FF666666"
+        android:textSize="10sp"
+        android:letterSpacing="0.2" />
+
+    <!-- City name + level (right side) -->
+    <LinearLayout
+        android:id="@+id/widget_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/widget_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lokasi Saya"
+            android:textColor="#FFFFFFFF"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:maxWidth="140dp" />
+
+        <TextView
+            android:id="@+id/widget_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Memuat..."
+            android:textColor="#FFAAAAAA"
+            android:textSize="11sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Dot indicator -->
+        <View
+            android:id="@+id/widget_dot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_gravity="end"
+            android:background="@drawable/circle_dot" />
+    </LinearLayout>
+
+</RelativeLayout>

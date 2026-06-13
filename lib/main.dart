@@ -8,16 +8,18 @@ import 'data/repos/air_quality_repo.dart';
 import 'providers/location_provider.dart';
 import 'providers/air_quality_provider.dart';
 import 'core/theme.dart';
+import 'services/notification_service.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/detail/detail_screen.dart';
+import 'screens/forecast/forecast_screen.dart';
+import 'screens/map/map_screen.dart';
 import 'screens/compare/compare_screen.dart';
-import 'screens/history/history_screen.dart';
+import 'screens/stats/stats_screen.dart';
 import 'screens/settings/settings_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // AMOLED status bar
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
@@ -33,6 +35,8 @@ Future<void> main() async {
 
   final repo = AirQualityRepo();
   await repo.init();
+
+  await NotificationService.instance.init();
 
   runApp(
     MultiProvider(
@@ -78,9 +82,21 @@ class _MainShellState extends State<MainShell> {
   static const _screens = [
     HomeScreen(),
     DetailScreen(),
+    ForecastScreen(),
+    MapScreen(),
     CompareScreen(),
-    HistoryScreen(),
+    StatsScreen(),
     SettingsScreen(),
+  ];
+
+  static const _navItems = [
+    _NavItemData(Icons.air_rounded, Icons.air_outlined, 'Beranda'),
+    _NavItemData(Icons.analytics_rounded, Icons.analytics_outlined, 'Detail'),
+    _NavItemData(Icons.wb_cloudy_rounded, Icons.wb_cloudy_outlined, 'Prakiraan'),
+    _NavItemData(Icons.map_rounded, Icons.map_outlined, 'Peta'),
+    _NavItemData(Icons.compare_arrows_rounded, Icons.compare_arrows_rounded, 'Bandingkan'),
+    _NavItemData(Icons.bar_chart_rounded, Icons.bar_chart_outlined, 'Statistik'),
+    _NavItemData(Icons.settings_rounded, Icons.settings_outlined, 'Pengaturan'),
   ];
 
   @override
@@ -96,48 +112,35 @@ class _MainShellState extends State<MainShell> {
           border: Border(top: BorderSide(color: AppTheme.border, width: 1)),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _NavItem(
-                  icon: Icons.air_rounded,
-                  label: 'Beranda',
-                  selected: _currentIndex == 0,
-                  onTap: () => setState(() => _currentIndex = 0),
-                ),
-                _NavItem(
-                  icon: Icons.analytics_outlined,
-                  label: 'Detail',
-                  selected: _currentIndex == 1,
-                  onTap: () => setState(() => _currentIndex = 1),
-                ),
-                _NavItem(
-                  icon: Icons.compare_arrows_rounded,
-                  label: 'Bandingkan',
-                  selected: _currentIndex == 2,
-                  onTap: () => setState(() => _currentIndex = 2),
-                ),
-                _NavItem(
-                  icon: Icons.history_rounded,
-                  label: 'Riwayat',
-                  selected: _currentIndex == 3,
-                  onTap: () => setState(() => _currentIndex = 3),
-                ),
-                _NavItem(
-                  icon: Icons.settings_outlined,
-                  label: 'Pengaturan',
-                  selected: _currentIndex == 4,
-                  onTap: () => setState(() => _currentIndex = 4),
-                ),
-              ],
+              children: _navItems.asMap().entries.map((e) {
+                final i = e.key;
+                final item = e.value;
+                final selected = _currentIndex == i;
+                return _NavItem(
+                  icon: selected ? item.activeIcon : item.icon,
+                  label: item.label,
+                  selected: selected,
+                  onTap: () => setState(() => _currentIndex = i),
+                );
+              }).toList(),
             ),
           ),
         ),
       ),
     );
   }
+}
+
+class _NavItemData {
+  final IconData activeIcon;
+  final IconData icon;
+  final String label;
+
+  const _NavItemData(this.activeIcon, this.icon, this.label);
 }
 
 class _NavItem extends StatelessWidget {
@@ -160,9 +163,11 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? AppTheme.accent.withValues(alpha: 0.1) : Colors.transparent,
+          color: selected
+              ? AppTheme.accent.withValues(alpha: 0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -177,9 +182,9 @@ class _NavItem extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                fontFamily: 'Sora',
                 fontSize: 10,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                fontWeight:
+                    selected ? FontWeight.w700 : FontWeight.w400,
                 color: selected ? AppTheme.accent : AppTheme.textTertiary,
               ),
             ),
@@ -189,4 +194,3 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
-
