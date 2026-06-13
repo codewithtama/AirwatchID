@@ -64,11 +64,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ]),
               const SizedBox(height: 20),
               _buildSection('Tentang', [
-                _buildInfoTile(
-                    'Aplikasi', AppConstants.appName),
+                _buildInfoTile('Aplikasi', AppConstants.appName),
                 _buildInfoTile('Versi', '1.0.0'),
+                _buildInfoTile('Pengembang', 'Dimas Alfa Pratama'),
+                _buildInfoTile('Lisensi', 'Proprietary (Hak Cipta Dilindungi)'),
+                _buildInfoTile('Privasi', 'Privasi Mutlak (Penyimpanan Lokal)'),
                 _buildInfoTile('Sumber Data', 'Open-Meteo (open-meteo.com)'),
-                _buildInfoTile('Tanpa API Key', 'Gratis, tanpa registrasi'),
               ]),
               const SizedBox(height: 80),
             ],
