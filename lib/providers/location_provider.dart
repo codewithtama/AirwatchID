@@ -62,7 +62,8 @@ class LocationProvider extends ChangeNotifier {
   Future<LocationPermission> _checkAndRequestPermission() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      throw Exception('Layanan lokasi tidak aktif. Aktifkan GPS Anda.');
+      await Geolocator.openLocationSettings();
+      return LocationPermission.denied;
     }
 
     LocationPermission permission = await Geolocator.checkPermission();

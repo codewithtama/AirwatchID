@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../providers/air_quality_provider.dart';
@@ -359,6 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPermissionError(LocationProvider loc) {
+    final isPermanentlyDenied = loc.status == LocationStatus.permanentlyDenied;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 60),
@@ -377,10 +380,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'AirWatch ID memerlukan akses lokasi\nuntuk menampilkan kualitas udara di sekitar Anda.',
+            Text(
+              isPermanentlyDenied
+                  ? 'Akses lokasi telah diblokir secara permanen.\nBuka pengaturan untuk mengizinkannya kembali.'
+                  : 'AirWatch ID memerlukan akses lokasi\nuntuk menampilkan kualitas udara di sekitar Anda.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Sora',
                 fontSize: 13,
                 color: AppTheme.textSecondary,
@@ -389,7 +394,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () => _loadData(),
+              onPressed: () async {
+                if (isPermanentlyDenied) {
+                  await Geolocator.openAppSettings();
+                } else {
+                  await _loadData();
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.accent,
                 foregroundColor: AppTheme.black,
@@ -398,9 +409,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Izinkan Akses Lokasi',
-                style: TextStyle(
+              child: Text(
+                isPermanentlyDenied
+                    ? 'Buka Pengaturan'
+                    : 'Izinkan Akses Lokasi',
+                style: const TextStyle(
                   fontFamily: 'Sora',
                   fontWeight: FontWeight.w600,
                 ),
