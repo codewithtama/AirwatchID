@@ -30,7 +30,47 @@ class _HomeScreenState extends State<HomeScreen> {
     final aq = context.read<AirQualityProvider>();
 
     if (!loc.hasLocation) {
-      await loc.requestLocation();
+      // Check current permission and show rationale if needed before requesting
+      try {
+        final permission = await Geolocator.checkPermission();
+        if (!mounted) return;
+        if (permission == LocationPermission.denied) {
+          final allow = await _showPermissionRationaleDialog();
+          if (!allow) return;
+        }
+
+        if (permission == LocationPermission.deniedForever) {
+          if (!mounted) return;
+          // Let the provider handle status; show settings prompt from UI when needed
+          // But offer to open app settings directly
+          final open = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              backgroundColor: AppTheme.surfaceElevated,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              title: const Text('Izin Lokasi Diblokir'),
+              content: const Text(
+                'Akses lokasi diblokir secara permanen. Buka pengaturan aplikasi untuk mengizinkan lokasi.',
+                style: TextStyle(height: 1.4),
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(ctx, true),
+                  child: const Text('Buka Pengaturan'),
+                ),
+              ],
+            ),
+          );
+          if (open == true) await Geolocator.openAppSettings();
+          return;
+        }
+
+        await loc.requestLocation();
+      } catch (_) {
+        // Fall back to provider request if anything unexpected happens
+        await loc.requestLocation();
+      }
     }
 
     if (loc.hasLocation) {
@@ -41,6 +81,26 @@ class _HomeScreenState extends State<HomeScreen> {
         forceRefresh: forceRefresh,
       );
     }
+  }
+
+  Future<bool> _showPermissionRationaleDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('Akses Lokasi Diperlukan'),
+        content: const Text(
+          'AirWatch ID membutuhkan akses lokasi untuk menampilkan kualitas udara di sekitar Anda.\n\nIzinkan akses lokasi agar aplikasi dapat menampilkan data yang relevan.',
+          style: TextStyle(height: 1.4),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Jangan Sekarang')),
+          ElevatedButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Izinkan')),
+        ],
+      ),
+    );
+    return result == true;
   }
 
   @override

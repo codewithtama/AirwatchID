@@ -68,7 +68,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _buildInfoTile('Versi', '1.0.0'),
                 _buildInfoTile('Pengembang', 'Dimas Alfa Pratama'),
                 _buildInfoTile('Lisensi', 'Proprietary (Hak Cipta Dilindungi)'),
-                _buildInfoTile('Privasi', 'Privasi Mutlak (Penyimpanan Lokal)'),
+                _buildActionTile(
+                  icon: Icons.privacy_tip_rounded,
+                  title: 'Kebijakan Privasi',
+                  subtitle: 'Lihat kebijakan privasi aplikasi',
+                  iconColor: AppTheme.accent,
+                  onTap: () => _showPrivacyDialog(context),
+                ),
                 _buildInfoTile('Sumber Data', 'Open-Meteo (open-meteo.com)'),
               ]),
               const SizedBox(height: 80),
@@ -297,6 +303,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       );
     }
+  }
+
+  void _showPrivacyDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('Kebijakan Privasi'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'AirWatch ID menyimpan data lokasi secara lokal untuk menampilkan kualitas udara yang relevan. Data tidak dikirim ke server eksternal kecuali Anda memilih untuk membagikannya.',
+                style: TextStyle(height: 1.4),
+              ),
+              SizedBox(height: 12),
+              Text('Jika aplikasi dipublikasikan, tambahkan tautan kebijakan privasi lengkap di sini.'),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Tutup')),
+        ],
+      ),
+    );
   }
 }
 
